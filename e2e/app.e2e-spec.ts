@@ -1,14 +1,14 @@
-import { SteamRecsPage } from './app.po';
+import { HomePage } from './app.po';
 
 describe('steam-recs App', function() {
-  let page: SteamRecsPage;
+  let page: HomePage;
 
   beforeEach(() => {
-    page = new SteamRecsPage();
+    page = new HomePage();
   });
 
   it('should display message saying app works', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect(page.getParagraphText()).toEqual('Steam Recommendations');
   });
 });

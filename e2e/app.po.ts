@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class SteamRecsPage {
+export class HomePage {
   navigateTo() {
     return browser.get('/');
   }
