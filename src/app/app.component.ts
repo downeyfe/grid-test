@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {Http} from '@angular/http';
-import 'rxjs/add/operator/toPromise';
+
+import {SteamService} from './steam/steam.service';
 
 @Component({
     selector: 'app-root',
@@ -13,16 +13,13 @@ export class AppComponent {
     appId: string;
     userId: string;
 
-    constructor(private http: Http) {}
+    constructor(private steamService: SteamService) {}
 
     getStats(): void {
-        this.http.get(`http://localhost:5000/stats?appId=${this.appId}&userId=${this.userId}`)
-            .toPromise()
+        this.steamService
+            .getStats(this.appId, this.userId)
             .then(response => {
                 this.stats = response.json();
             })
-            .catch(error => {
-                console.log('error', error);
-            });
     }
 }
