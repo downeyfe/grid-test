@@ -1,3 +1,16 @@
 <h1>
-  Steam Recommendations
+    Steam Recommendations
 </h1>
+<div>
+    <input type="text"
+           [(ngModel)]="appId"
+           name="appId">
+    <input type="text"
+           [(ngModel)]="userId"
+           name="userId">
+
+    <button (click)="getStats()">Get stats</button>
+</div>
+<div>
+    {{stats | json}}
+</div>
