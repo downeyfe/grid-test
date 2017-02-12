@@ -1,7 +1,7 @@
 <h1>
     Steam Recommendations
 </h1>
-<div>
+<form (submit)="getStats()">
     <input type="text"
            [(ngModel)]="appId"
            name="appId">
@@ -9,8 +9,8 @@
            [(ngModel)]="userId"
            name="userId">
 
-    <button (click)="getStats()">Get stats</button>
-</div>
+    <button type="submit">Get stats</button>
+</form>
 <div>
     {{stats | json}}
 </div>
