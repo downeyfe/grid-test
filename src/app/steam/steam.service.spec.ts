@@ -33,8 +33,8 @@ describe('Steam service', () => {
                 connection = conn;
             });
 
-            service.getStats('appId', 'userId').then(() => {
-                expect(connection.request.url).toEqual('http://localhost:5000/stats?appId=appId&userId=userId');
+            service.getAchievements('appId', 'userId').then(() => {
+                expect(connection.request.url).toEqual('http://localhost:5000/achievements?appId=appId&userId=userId');
                 expect(connection.request.method).toEqual(RequestMethod.Get);
             });
         })));

@@ -12,9 +12,9 @@ export class SteamService {
         this.api = environment.api;
     }
 
-    getStats(appId: string, userId: string): Promise<Response> {
+    getAchievements(appId: string, userId: string): Promise<Response> {
         return this.http
-            .get(`${this.api}/stats?appId=${appId}&userId=${userId}`)
+            .get(`${this.api}/achievements?appId=${appId}&userId=${userId}`)
             .toPromise();
     }
 }

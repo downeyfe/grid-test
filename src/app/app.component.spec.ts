@@ -10,7 +10,7 @@ let fixture: ComponentFixture<AppComponent>;
 
 describe('AppComponent', () => {
     class SteamServiceStub {
-        getStats() {}
+        getAchievements() {}
     }
 
     beforeEach(() => {
@@ -30,21 +30,32 @@ describe('AppComponent', () => {
         comp = fixture.componentInstance;
     });
 
-    it('requests stats from service successfully',
+    it('requests achievements from service successfully',
         fakeAsync(inject([SteamService], (steamService: SteamService) => {
-            spyOn(steamService, 'getStats').and.returnValue(Promise.resolve(new Response(new ResponseOptions({
+            spyOn(steamService, 'getAchievements').and.returnValue(Promise.resolve(new Response(new ResponseOptions({
                 body: {
-                    steam: 'stats'
+                    playerstats: {
+                        achievements: [
+                            {
+                                apiname: 'name1',
+                                achieved: 1
+                            },
+                            {
+                                apiname: 'name2',
+                                achieved: 0
+                            }
+                        ]
+                    }
                 }
             }))));
 
             comp.appId = 'appId';
             comp.userId = 'userId';
 
-            comp.getStats();
+            comp.getAchievements();
             tick();
 
-            expect(steamService.getStats).toHaveBeenCalledWith('appId', 'userId');
-            expect(comp.stats).toEqual({ steam: 'stats' });
+            expect(steamService.getAchievements).toHaveBeenCalledWith('appId', 'userId');
+            expect(comp.achievements).toEqual([{ apiname: 'name2', achieved: 0 }]);
         })));
 });

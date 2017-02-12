@@ -9,17 +9,17 @@ import {SteamService} from './steam/steam.service';
 })
 
 export class AppComponent {
-    stats: Object;
+    achievements: Array<Object>;
     appId: string;
     userId: string;
 
     constructor(private steamService: SteamService) {}
 
-    getStats(): void {
+    getAchievements(): void {
         this.steamService
-            .getStats(this.appId, this.userId)
+            .getAchievements(this.appId, this.userId)
             .then(response => {
-                this.stats = response.json();
+                this.achievements = response.json().playerstats.achievements.filter(value => !value.achieved);
             })
     }
 }
