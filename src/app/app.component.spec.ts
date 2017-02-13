@@ -10,6 +10,7 @@ let fixture: ComponentFixture<AppComponent>;
 
 describe('AppComponent', () => {
     class SteamServiceStub {
+        getUserId() {}
         getAchievements() {}
     }
 
@@ -30,8 +31,15 @@ describe('AppComponent', () => {
         comp = fixture.componentInstance;
     });
 
-    it('requests achievements from service successfully',
+    it('requests achievements from service successfully and stores those that are not achieved',
         fakeAsync(inject([SteamService], (steamService: SteamService) => {
+            spyOn(steamService, 'getUserId').and.returnValue(Promise.resolve(new Response(new ResponseOptions({
+                body: {
+                    response: {
+                        steamid: 'userId'
+                    }
+                }
+            }))));
             spyOn(steamService, 'getAchievements').and.returnValue(Promise.resolve(new Response(new ResponseOptions({
                 body: {
                     playerstats: {
@@ -50,12 +58,14 @@ describe('AppComponent', () => {
             }))));
 
             comp.appId = 'appId';
-            comp.userId = 'userId';
+            comp.username = 'username';
 
             comp.getAchievements();
             tick();
 
+            expect(steamService.getUserId).toHaveBeenCalledWith('username');
             expect(steamService.getAchievements).toHaveBeenCalledWith('appId', 'userId');
+            expect(comp.userId).toEqual('userId');
             expect(comp.achievements).toEqual([{ apiname: 'name2', achieved: 0 }]);
         })));
 });

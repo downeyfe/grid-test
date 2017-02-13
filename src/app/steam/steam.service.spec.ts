@@ -23,7 +23,23 @@ describe('Steam service', () => {
         });
     });
 
-    it('retrieves stats from API',
+    it('retrieves 64bit ID from API',
+        async(inject([SteamService, MockBackend], (service: SteamService, mockBackend: MockBackend) => {
+
+            let connection = { request: { url: null, method: null }};
+
+            mockBackend.connections.subscribe(conn => {
+                conn.mockRespond(new Response(new ResponseOptions({})));
+                connection = conn;
+            });
+
+            service.getUserId('username').then(() => {
+                expect(connection.request.url).toEqual('http://localhost:5000/steam-proxy/ISteamUser/ResolveVanityURL/v0001?vanityurl=username');
+                expect(connection.request.method).toEqual(RequestMethod.Get);
+            });
+        })));
+
+    it('retrieves achievements from API',
         async(inject([SteamService, MockBackend], (service: SteamService, mockBackend: MockBackend) => {
 
             let connection = { request: { url: null, method: null }};
@@ -34,7 +50,7 @@ describe('Steam service', () => {
             });
 
             service.getAchievements('appId', 'userId').then(() => {
-                expect(connection.request.url).toEqual('http://localhost:5000/achievements?appId=appId&userId=userId');
+                expect(connection.request.url).toEqual('http://localhost:5000/steam-proxy/ISteamUserStats/GetPlayerAchievements/v0001?appid=appId&steamid=userId');
                 expect(connection.request.method).toEqual(RequestMethod.Get);
             });
         })));

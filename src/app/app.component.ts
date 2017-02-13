@@ -11,15 +11,21 @@ import {SteamService} from './steam/steam.service';
 export class AppComponent {
     achievements: Array<Object>;
     appId: string;
+    username: string;
     userId: string;
 
     constructor(private steamService: SteamService) {}
 
     getAchievements(): void {
         this.steamService
-            .getAchievements(this.appId, this.userId)
+            .getUserId(this.username)
             .then(response => {
-                this.achievements = response.json().playerstats.achievements.filter(value => !value.achieved);
-            })
+                this.userId = response.json().response.steamid;
+
+                this.steamService.getAchievements(this.appId, this.userId)
+                    .then(response => {
+                        this.achievements = response.json().playerstats.achievements.filter(value => !value.achieved);
+                    })
+            });
     }
 }
