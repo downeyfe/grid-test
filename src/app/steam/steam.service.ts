@@ -18,6 +18,12 @@ export class SteamService {
             .toPromise();
     }
 
+    getGamesList(userId: string): Promise<Response> {
+        return this.http
+            .get(`${this.api}/IPlayerService/GetOwnedGames/v0001?include_appinfo=1&include_played_free_games=1&steamid=${userId}`)
+            .toPromise();
+    }
+
     getAchievements(appId: string, userId: string): Promise<Response> {
         return this.http
             .get(`${this.api}/ISteamUserStats/GetPlayerAchievements/v0001?appid=${appId}&steamid=${userId}`)

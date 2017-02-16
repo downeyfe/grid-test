@@ -1,18 +1,15 @@
 <h1>
     Steam Recommendations
 </h1>
-<form (submit)="getAchievements()">
-    <input type="text"
-           [(ngModel)]="appId"
-           name="appId">
+<form (submit)="getGamesList()">
     <input type="text"
            [(ngModel)]="username"
            name="username">
 
-    <button type="submit">Get stats</button>
+    <button type="submit">Get user's game list</button>
 </form>
 <div>
     <ul>
-        <li *ngFor="let achv of achievements">{{achv.apiname}}</li>
+        <li *ngFor="let game of games">{{game.name}}</li>
     </ul>
 </div>

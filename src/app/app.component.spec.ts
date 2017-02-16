@@ -11,6 +11,7 @@ let fixture: ComponentFixture<AppComponent>;
 describe('AppComponent', () => {
     class SteamServiceStub {
         getUserId() {}
+        getGamesList() {}
         getAchievements() {}
     }
 
@@ -31,7 +32,7 @@ describe('AppComponent', () => {
         comp = fixture.componentInstance;
     });
 
-    it('requests achievements from service successfully and stores those that are not achieved',
+    it('requests games list from service successfully and stores them',
         fakeAsync(inject([SteamService], (steamService: SteamService) => {
             spyOn(steamService, 'getUserId').and.returnValue(Promise.resolve(new Response(new ResponseOptions({
                 body: {
@@ -40,16 +41,37 @@ describe('AppComponent', () => {
                     }
                 }
             }))));
+            spyOn(steamService, 'getGamesList').and.returnValue(Promise.resolve(new Response(new ResponseOptions({
+                body: {
+                    response: {
+                        games: 'some games'
+                    }
+                }
+            }))));
+
+            comp.username = 'username';
+
+            comp.getGamesList();
+            tick();
+
+            expect(steamService.getUserId).toHaveBeenCalledWith('username');
+            expect(steamService.getGamesList).toHaveBeenCalledWith('userId');
+            expect(comp.userId).toEqual('userId');
+            expect(comp.games).toEqual('some games');
+        })));
+
+    it('requests achievement list for given app from service and stores the unachieved ones',
+        fakeAsync(inject([SteamService], (steamService: SteamService) => {
             spyOn(steamService, 'getAchievements').and.returnValue(Promise.resolve(new Response(new ResponseOptions({
                 body: {
                     playerstats: {
                         achievements: [
                             {
-                                apiname: 'name1',
+                                name: 'ach1',
                                 achieved: 1
                             },
                             {
-                                apiname: 'name2',
+                                name: 'ach2',
                                 achieved: 0
                             }
                         ]
@@ -57,15 +79,12 @@ describe('AppComponent', () => {
                 }
             }))));
 
-            comp.appId = 'appId';
-            comp.username = 'username';
+            comp.userId = 'userId';
 
-            comp.getAchievements();
+            comp.getAchievements('appId');
             tick();
 
-            expect(steamService.getUserId).toHaveBeenCalledWith('username');
             expect(steamService.getAchievements).toHaveBeenCalledWith('appId', 'userId');
-            expect(comp.userId).toEqual('userId');
-            expect(comp.achievements).toEqual([{ apiname: 'name2', achieved: 0 }]);
+            expect(comp.achievements).toEqual([{ name: 'ach2', achieved: 0 }]);
         })));
 });
