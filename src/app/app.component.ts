@@ -19,12 +19,12 @@ export class AppComponent {
     getAchievements(): void {
         this.steamService
             .getUserId(this.username)
-            .then(response => {
-                this.userId = response.json().response.steamid;
+            .then(userResponse => {
+                this.userId = userResponse.json().response.steamid;
 
                 this.steamService.getAchievements(this.appId, this.userId)
-                    .then(response => {
-                        this.achievements = response.json().playerstats.achievements.filter(value => !value.achieved);
+                    .then(achievementResponse => {
+                        this.achievements = achievementResponse.json().playerstats.achievements.filter(value => !value.achieved);
                     })
             });
     }
