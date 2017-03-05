@@ -66,7 +66,7 @@ describe('Steam service', () => {
             });
 
             service.getOwnedGames('userId').then(() => {
-                expect(connection.request.url).toEqual('http://localhost:5000/steam-proxy/IPlayerService/GetOwnedGames/v0001?steamid=userId&include_appinfo=1');
+                expect(connection.request.url).toEqual('http://localhost:5000/steam-proxy/IPlayerService/GetOwnedGames/v0001?steamid=userId&include_appinfo=1&include_played_free_games=1');
                 expect(connection.request.method).toEqual(RequestMethod.Get);
             });
         })));

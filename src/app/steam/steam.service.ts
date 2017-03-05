@@ -26,7 +26,7 @@ export class SteamService {
 
     getOwnedGames(userId: string): Promise<Response> {
         return this.http
-            .get(`${this.api}/IPlayerService/GetOwnedGames/v0001?steamid=${userId}&include_appinfo=1`)
+            .get(`${this.api}/IPlayerService/GetOwnedGames/v0001?steamid=${userId}&include_appinfo=1&include_played_free_games=1`)
             .toPromise();
     }
 }
