@@ -9,23 +9,38 @@ import {SteamService} from './steam/steam.service';
 })
 
 export class AppComponent {
-    achievements: Array<Object>;
+    games: Array<Object>;
     appId: string;
     username: string;
     userId: string;
 
     constructor(private steamService: SteamService) {}
 
-    getAchievements(): void {
+    getStats(): void {
         this.steamService
             .getUserId(this.username)
             .then(response => {
                 this.userId = response.json().response.steamid;
 
-                this.steamService.getAchievements(this.appId, this.userId)
+                this.steamService
+                    .getOwnedGames(this.userId)
                     .then(response => {
-                        this.achievements = response.json().playerstats.achievements.filter(value => !value.achieved);
-                    })
+                        this.games = response.json().response.games
+                            .filter(game => game.playtime_forever)
+                            .map(game => this.getAchievementsForGame(game));
+
+                    });
             });
+    }
+
+    private getAchievementsForGame(game: any): Object {
+        this.steamService
+            .getAchievements(game.appid, this.userId)
+            .then(response => {
+                game.achievements = (response.json().playerstats.achievements || [])
+                    .filter(achievement => !achievement.achieved);
+            });
+
+        return game;
     }
 }

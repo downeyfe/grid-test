@@ -12,6 +12,7 @@ describe('AppComponent', () => {
     class SteamServiceStub {
         getUserId() {}
         getAchievements() {}
+        getOwnedGames() {}
     }
 
     beforeEach(() => {
@@ -31,12 +32,28 @@ describe('AppComponent', () => {
         comp = fixture.componentInstance;
     });
 
-    it('requests achievements from service successfully and stores those that are not achieved',
+    it('requests played games and achievements for those games from service, stores games played with un-achieved achievements',
         fakeAsync(inject([SteamService], (steamService: SteamService) => {
             spyOn(steamService, 'getUserId').and.returnValue(Promise.resolve(new Response(new ResponseOptions({
                 body: {
                     response: {
-                        steamid: 'userId'
+                        steamid: 'someId'
+                    }
+                }
+            }))));
+            spyOn(steamService, 'getOwnedGames').and.returnValue(Promise.resolve(new Response(new ResponseOptions({
+                body: {
+                    response: {
+                        games: [
+                            {
+                                playtime_forever: 0,
+                                appid: 'app1'
+                            },
+                            {
+                                playtime_forever: 100,
+                                appid: 'app2'
+                            }
+                        ]
                     }
                 }
             }))));
@@ -45,11 +62,11 @@ describe('AppComponent', () => {
                     playerstats: {
                         achievements: [
                             {
-                                apiname: 'name1',
+                                name: 'ach1',
                                 achieved: 1
                             },
                             {
-                                apiname: 'name2',
+                                name: 'ach2',
                                 achieved: 0
                             }
                         ]
@@ -57,15 +74,23 @@ describe('AppComponent', () => {
                 }
             }))));
 
-            comp.appId = 'appId';
             comp.username = 'username';
-
-            comp.getAchievements();
+            comp.getStats();
             tick();
 
             expect(steamService.getUserId).toHaveBeenCalledWith('username');
-            expect(steamService.getAchievements).toHaveBeenCalledWith('appId', 'userId');
-            expect(comp.userId).toEqual('userId');
-            expect(comp.achievements).toEqual([{ apiname: 'name2', achieved: 0 }]);
+            expect(comp.userId).toEqual('someId');
+            expect(steamService.getOwnedGames).toHaveBeenCalledWith('someId');
+            expect(steamService.getAchievements).toHaveBeenCalledWith('app2', 'someId');
+            expect(comp.games).toEqual([{
+                playtime_forever: 100,
+                appid: 'app2',
+                achievements: [
+                    {
+                        name: 'ach2',
+                        achieved: 0
+                    }
+                ]
+            }]);
         })));
 });

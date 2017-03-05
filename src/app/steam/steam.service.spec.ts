@@ -50,7 +50,23 @@ describe('Steam service', () => {
             });
 
             service.getAchievements('appId', 'userId').then(() => {
-                expect(connection.request.url).toEqual('http://localhost:5000/steam-proxy/ISteamUserStats/GetPlayerAchievements/v0001?appid=appId&steamid=userId');
+                expect(connection.request.url).toEqual('http://localhost:5000/steam-proxy/ISteamUserStats/GetPlayerAchievements/v0001?appid=appId&steamid=userId&l=en');
+                expect(connection.request.method).toEqual(RequestMethod.Get);
+            });
+        })));
+
+    it('retrieves owned games from API',
+        async(inject([SteamService, MockBackend], (service: SteamService, mockBackend: MockBackend) => {
+
+            let connection = { request: { url: null, method: null }};
+
+            mockBackend.connections.subscribe(conn => {
+                conn.mockRespond(new Response(new ResponseOptions({})));
+                connection = conn;
+            });
+
+            service.getOwnedGames('userId').then(() => {
+                expect(connection.request.url).toEqual('http://localhost:5000/steam-proxy/IPlayerService/GetOwnedGames/v0001?steamid=userId&include_appinfo=1');
                 expect(connection.request.method).toEqual(RequestMethod.Get);
             });
         })));
