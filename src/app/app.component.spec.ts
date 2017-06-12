@@ -42,7 +42,7 @@ describe('AppComponent', () => {
                 }
             }))));
 
-            comp.getServices();
+            comp.ngOnInit();
             tick();
 
             expect(bookingsService.getServices).toHaveBeenCalled();

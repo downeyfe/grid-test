@@ -1,7 +1,3 @@
-<button (click)="getServices()">
-    Get
-</button>
-
 <ul>
-    <li *ngFor="let service of services">{{service.name}} {{service.description}} {{service.prices[0]}}</li>
+    <li *ngFor="let service of services" class="test">{{service.name}} {{service.description}} {{service.prices[0]}}</li>
 </ul>

@@ -1,14 +1,16 @@
 import {HomePage} from './app.po';
 
-xdescribe('Grid Test App', function () {
+describe('Grid Test App', function () {
     let page: HomePage;
 
     beforeEach(() => {
         page = new HomePage();
+        page.navigateTo();
     });
 
-    it('should display message saying app works', () => {
-        page.navigateTo();
-        expect(page.getParagraphText()).toEqual('Hello world');
+    it('should display correct number of service results', () => {
+        page.getServicesCount().then(count => {
+            expect(count).toEqual(7);
+        });
     });
 });

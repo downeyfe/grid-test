@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {BookingsService} from './bookings/bookings.service';
 
@@ -8,10 +8,14 @@ import {BookingsService} from './bookings/bookings.service';
     styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
     services: Array<Object>;
 
     constructor(private bookingsService: BookingsService) {}
+
+    ngOnInit() {
+        this.getServices();
+    }
 
     getServices(): void {
         this.bookingsService
