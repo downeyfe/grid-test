@@ -1,3 +1,7 @@
-<h1>
-    Hello world
-</h1>
+<button (click)="getServices()">
+    Get
+</button>
+
+<ul>
+    <li *ngFor="let service of services">{{service.name}} {{service.description}} {{service.prices[0]}}</li>
+</ul>
