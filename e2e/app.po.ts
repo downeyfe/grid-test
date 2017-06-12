@@ -7,10 +7,10 @@ export class HomePage {
 
     getServicesCount() {
         const EC = protractor.ExpectedConditions;
-        const firstLi = element(by.css('.test'));
+        const firstResult = element(by.css('.services__item'));
 
-        return browser.wait(EC.presenceOf(firstLi), 500).then(() => {
-            return element.all(by.css('.test')).count().then(count => count);
+        return browser.wait(EC.presenceOf(firstResult), 500).then(() => {
+            return element.all(by.css('.services__item')).count().then(count => count);
         });
     }
 }
