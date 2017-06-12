@@ -4,7 +4,6 @@ import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 
 import {AppComponent} from './app.component';
-import {SteamService} from './steam/steam.service';
 
 @NgModule({
     declarations: [
@@ -15,9 +14,7 @@ import {SteamService} from './steam/steam.service';
         FormsModule,
         HttpModule
     ],
-    providers: [
-        SteamService
-    ],
+    providers: [],
     bootstrap: [AppComponent]
 })
 

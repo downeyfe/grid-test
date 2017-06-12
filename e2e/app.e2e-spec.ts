@@ -1,6 +1,6 @@
 import {HomePage} from './app.po';
 
-xdescribe('steam-recs App', function () {
+xdescribe('Grid Test App', function () {
     let page: HomePage;
 
     beforeEach(() => {
@@ -9,6 +9,6 @@ xdescribe('steam-recs App', function () {
 
     it('should display message saying app works', () => {
         page.navigateTo();
-        expect(page.getParagraphText()).toEqual('Steam Recommendations');
+        expect(page.getParagraphText()).toEqual('Hello world');
     });
 });
