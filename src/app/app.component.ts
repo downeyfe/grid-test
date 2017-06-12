@@ -24,4 +24,8 @@ export class AppComponent implements OnInit {
                 this.services = response.json()._embedded.services;
             });
     }
+
+    transformPrice(price: number): string {
+        return (price / 100 || 0).toFixed(2);
+    }
 }

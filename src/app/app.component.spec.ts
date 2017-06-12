@@ -54,4 +54,17 @@ describe('AppComponent', () => {
                 }
             ]);
         })));
+
+    [
+        { given: 5000, expected: '50.00'},
+        { given: 0, expected: '0.00'},
+        { given: -1, expected: '-0.01'},
+        { given: null, expected: '0.00'},
+        { given: undefined, expected: '0.00'},
+        { given: false, expected: '0.00'}
+    ].map(scenario => {
+        it('converts price from pennies to pounds', () => {
+            expect(comp.transformPrice(scenario.given)).toEqual(scenario.expected);
+        });
+    });
 });
