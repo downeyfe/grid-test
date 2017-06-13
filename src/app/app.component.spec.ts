@@ -1,8 +1,8 @@
 import {TestBed, ComponentFixture, tick, inject, fakeAsync} from '@angular/core/testing';
-import {ResponseOptions, Response} from "@angular/http";
+import {ResponseOptions, Response} from '@angular/http';
 
 import {AppComponent} from './app.component';
-import {BookingsService} from "./bookings/bookings.service";
+import {BookingsService} from './bookings/bookings.service';
 
 let comp: AppComponent;
 let fixture: ComponentFixture<AppComponent>;
@@ -26,7 +26,7 @@ describe('AppComponent', () => {
         comp = fixture.componentInstance;
     });
 
-    it('requests played games and achievements for those games from service, stores games played with un-achieved achievements',
+    it('requests list of services from booking service',
         fakeAsync(inject([BookingsService], (bookingsService: BookingsService) => {
             spyOn(bookingsService, 'getServices').and.returnValue(Promise.resolve(new Response(new ResponseOptions({
                 body: {
